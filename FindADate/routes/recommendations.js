@@ -31,8 +31,8 @@ router.post('/', function(req, res, next) {
         async.constant(address),
         getStart,
         async.apply(getRecommendations, fsParam),
-        getUberPrices
-        //getLyftPrices,
+        getUberPrices,
+        getLyftPrices
     ],
     function final(err, result) {
        if(err) {
@@ -152,10 +152,57 @@ const getUberPrices = function(recommendations, start, callback) {
             })
     });
 };
-/*
-const getLyftPrices = function(start, end, cb) {
 
+const getLyftPrices = function(recommendations, start, callback) {
+    return new Promise(function (resolve, reject) {
+        let options = {
+            method: 'GET',
+            url: 'https://api.lyft.com/v1/cost',
+            qs:
+                {
+                    start_lat: `${start.lat}`,
+                    start_lng: `${start.lon}`
+                },
+            headers:
+                {Authorization: 'bearer ' + `${auth.LYFT.CLIENT_TOKEN}`}
+        };
+
+        let getPrices = function (place) {
+            return new Promise(function (resolve, reject) {
+
+                options.qs.end_lat = `${place.location.lat}`;
+                options.qs.end_lng = `${place.location.lon}`;
+
+                request(options, function (error, response, body) {
+                    if (error) throw new Error(error);
+
+                    let estimates = [];
+                    let data = JSON.parse(body);
+
+                    data.cost_estimates.forEach(function (price) {
+                        let estimate = {
+                            type: price.ride_type,
+                            estimate: `$${(price.estimated_cost_cents_min)/100.0}-$${(price.estimated_cost_cents_max)/100.0}`
+                        };
+                        estimates.push(estimate)
+                    });
+                    place.Lyft_estimates = estimates;
+                    resolve();
+                });
+            })
+        };
+
+        let recommendationEstimates = recommendations.map(getPrices);
+
+        Promise.all(recommendationEstimates)
+            .then(function() {
+                callback(null, recommendations, start)
+            })
+            .catch(function(err) {
+                console.log(err)
+            })
+    });
 };
-*/
+
 
 module.exports = router;
