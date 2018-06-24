@@ -30,8 +30,8 @@ router.post('/', function(req, res, next) {
     async.waterfall([
         async.constant(address),
         getStart,
-        async.apply(getRecommendations, fsParam)
-        //getUberPrices,
+        async.apply(getRecommendations, fsParam),
+        getUberPrices
         //getLyftPrices,
     ],
     function final(err, result) {
@@ -86,7 +86,6 @@ const getRecommendations = function(fsParam, start, callback) {
     request(fsParam, function (error, response, body) {
         if (error) throw new Error(error);
         body = JSON.parse(body);
-        console.log(body.response.groups[0].items);
         body.response.groups[0].items.forEach(function(item){
             let place = {
                 name: item.venue.name,
@@ -103,11 +102,57 @@ const getRecommendations = function(fsParam, start, callback) {
     });
 };
 
-/*
-const getUberPrices = function(start, end, cb){
+const getUberPrices = function(recommendations, start, callback) {
+    return new Promise(function (resolve, reject) {
+        let options = {
+            method: 'GET',
+            url: 'https://api.uber.com/v1.2/estimates/price',
+            qs:
+                {
+                    start_latitude: `${start.lat}`,
+                    start_longitude: `${start.lon}`
+                },
+            headers:
+                {Authorization: 'Token ' + `${auth.UBER.SERVER_TOKEN}`}
+        };
 
+        let getPrices = function (place) {
+            return new Promise(function (resolve, reject) {
+
+                options.qs.end_latitude = `${place.location.lat}`;
+                options.qs.end_longitude = `${place.location.lon}`;
+
+                request(options, function (error, response, body) {
+                    if (error) throw new Error(error);
+
+                    let estimates = [];
+                    let data = JSON.parse(body);
+
+                    data.prices.forEach(function (price) {
+                        let estimate = {
+                            type: price.display_name,
+                            estimate: price.estimate
+                        };
+                        estimates.push(estimate)
+                    });
+                    place.Uber_estimates = estimates;
+                    resolve();
+                });
+            })
+        };
+
+        let recommendationEstimates = recommendations.map(getPrices);
+
+        Promise.all(recommendationEstimates)
+            .then(function() {
+                callback(null, recommendations, start)
+            })
+            .catch(function(err) {
+                console.log(err)
+            })
+    });
 };
-
+/*
 const getLyftPrices = function(start, end, cb) {
 
 };
