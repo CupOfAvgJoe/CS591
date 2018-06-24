@@ -101,27 +101,8 @@ const getRecommendations = function(fsParam, start, callback) {
         });
         callback(null, recommendations, start)
     });
-
-    // let options = fsParam;
-    //
-    // let callFS = function(options) {
-    //     return new Promise(function(resolve, reject) {
-    //         rpl.get('https://api.foursquare.com/v2/venues/explore', options)
-    //             .then(function (response) {
-    //                 let data = response;
-    //                 recommendations.push(data.response.groups);
-    //                 console.log(`${recommendations}`);
-    //                 resolve();
-    //             });
-    //         })
-    //     }
-    //
-    // Promise.all([callFS(options)])
-    //     .then(function() {
-    //         callback(null, recommendations)
-    //     })
-
 };
+
 /*
 const getUberPrices = function(start, end, cb){
 
