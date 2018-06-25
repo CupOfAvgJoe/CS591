@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../auth.json');
+const auth = require('../config/auth.json');
 const request = require('request');  //used for geolocation
 const rpl = require('request-promise-lite'); //used for waterfalling
 const async = require('async');
