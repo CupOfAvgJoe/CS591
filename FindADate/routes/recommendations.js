@@ -19,7 +19,7 @@ router.post('/', function(req, res, next) {
             client_id: `${auth.Foursquare.CLIENT_ID}`,
             client_secret: `${auth.Foursquare.CLIENT_SECRET}`,
             section: `${req.body.theme}`,
-            openNow: "1",
+            openNow: `${req.body.openNow}`,
             limit: "10",
             v: "20180622"
         }

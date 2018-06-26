@@ -4,6 +4,7 @@ const path = require('path');
 //const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const session = require('express-session');
+const auth = require('./config/auth');
 
 const twitterAuthRouter = require('./routes/twitterAuth');
 const usersRouter = require('./routes/users');
@@ -20,14 +21,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 //app.use(cookieParser());
 app.use(session({
-    secret: "hello world",
+    secret: `${auth.SESSION.SESSION_SECRET}`,
     resave: false,
     saveUninitialized: true,
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/auth', twitterAuthRouter);
-app.use('/users', usersRouter);
 app.use('/recommendations', recommendationsRouter);
 
 // catch 404 and forward to error handler
