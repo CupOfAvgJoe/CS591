@@ -7,7 +7,6 @@ const session = require('express-session');
 const auth = require('./config/auth');
 
 const twitterAuthRouter = require('./routes/twitterAuth');
-const usersRouter = require('./routes/users');
 const recommendationsRouter = require('./routes/recommendations');
 
 const app = express();
