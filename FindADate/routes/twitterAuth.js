@@ -180,7 +180,7 @@ router.get('/callback', function (req, res, next) {
                     }
                     res.cookie('twitterAccessJwt', authJwtToken, cookieOptions)
                     //
-                    res.render('twitterAccount', {loggedIn: true})
+                    res.redirect('http://localhost:4200/search')
                 }
             }
         );

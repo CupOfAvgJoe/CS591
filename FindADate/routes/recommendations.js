@@ -81,7 +81,7 @@ const getStart = function(address, callback) {
 const getRecommendations = function(fsParam, start, callback) {
     fsParam.qs.ll = `${start.lat},${start.lon}`;
 
-    let recommendations = [];
+    let recommendations = {results: []};
 
     request(fsParam, function (error, response, body) {
         if (error) throw new Error(error);
@@ -96,7 +96,7 @@ const getRecommendations = function(fsParam, start, callback) {
                 },
                 category: item.venue.categories[0].name
             };
-            recommendations.push(place)
+            recommendations.results.push(place)
         });
         callback(null, recommendations, start)
     });
@@ -141,7 +141,7 @@ const getUberPrices = function(recommendations, start, callback) {
             })
         };
 
-        let recommendationEstimates = recommendations.map(getPrices);
+        let recommendationEstimates = recommendations.results.map(getPrices);
 
         Promise.all(recommendationEstimates)
             .then(function() {
@@ -192,7 +192,7 @@ const getLyftPrices = function(recommendations, start, callback) {
             })
         };
 
-        let recommendationEstimates = recommendations.map(getPrices);
+        let recommendationEstimates = recommendations.results.map(getPrices);
 
         Promise.all(recommendationEstimates)
             .then(function() {
