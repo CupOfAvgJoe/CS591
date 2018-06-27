@@ -8,12 +8,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthenticationComponent } from './authentication/authentication.component';
+import { RecommendationsListComponent } from './recommendations-list/recommendations-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchFormComponent,
-    AuthenticationComponent
+    AuthenticationComponent,
+    RecommendationsListComponent
   ],
   imports: [
     BrowserModule,

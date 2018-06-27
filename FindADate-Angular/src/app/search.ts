@@ -7,7 +7,7 @@ export class Search {
   public theme: string;
   public openNow: string;
 
-  constructor({street, city, state, postalcode, theme, openNow}) {
+  constructor(street, city, state, postalcode, theme, openNow) {
     this.street = street;
     this.city = city;
     this.state = state;

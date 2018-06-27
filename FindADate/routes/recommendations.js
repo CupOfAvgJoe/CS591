@@ -6,6 +6,7 @@ const rpl = require('request-promise-lite'); //used for waterfalling
 const async = require('async');
 
 router.post('/', function(req, res, next) {
+
     let address = {
         street: `${req.body.street}`,
         city: `${req.body.city}`,

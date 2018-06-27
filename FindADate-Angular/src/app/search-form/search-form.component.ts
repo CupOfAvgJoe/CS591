@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Search } from '../search';
 import { ApiService } from './api.service';
 
+import {Recommendation} from '../recommendations';
+
 @Component({
   selector: 'app-search-form',
   templateUrl: './search-form.component.html',
@@ -14,20 +16,20 @@ export class SearchFormComponent implements OnInit {
 
   message: string;
 
-  recommendations: any;
+  recommendations: Recommendation[];
 
-  themes = ['food', 'drinks', 'coffee', 'shops', 'arts',
-    'outdoors', 'sights', 'trending', 'topPicks'];
+  themes = ['topPicks', 'trending', 'food', 'drinks', 'coffee', 'shops', 'arts',
+    'outdoors', 'sights'];
 
   openNowOptions = ['0', '1'];
 
   getRecommendations(form) :void{
     console.log(form);
-    let star = new Search(form);
-    this.message = `Searching for ${star.city}`;
+    let star = new Search(form.street, form.city, form.state, form.postalcode, form.theme, form.openNow)
+    this.message = `Searching for ${star.street} ${star.city}, ${star.state}, ${star.postalcode}`;
     this.apiService.getRecommendations(star)
       .subscribe(
-        (response) => this.recommendations = response,
+        (response) => {this.recommendations = response.results},
         (err) => console.log(`Error: ${err}`),
         () => console.log(`Completed Request`)
       );
@@ -35,7 +37,7 @@ export class SearchFormComponent implements OnInit {
 
   constructor(private apiService: ApiService) {
     this.message = '';
-    this.search = new Search ({street: '', city: '', state: '', postalcode: '', theme: '', openNow: ''});
+    this.search = new Search ('', '', '', '', '', '');
 
   }
 
