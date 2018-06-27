@@ -25,7 +25,7 @@ export class SearchFormComponent implements OnInit {
 
   getRecommendations(form) :void{
     let star = new Search(form.street, form.city, form.state, form.postalcode, form.theme, form.openNow);
-    this.message = `Searching for ${star.street} ${star.city}, ${star.state}, ${star.postalcode}`;
+    this.message = `Searching for ${star.theme} near ${star.street} ${star.city}, ${star.state}, ${star.postalcode}`;
     this.apiService.getRecommendations(star)
       .subscribe(
         (response: Recommendation[]) => {
