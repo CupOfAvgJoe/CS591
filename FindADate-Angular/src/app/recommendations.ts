@@ -1,13 +1,13 @@
 export class Recommendation {
   public name: string;
-  public address: string[];
+  public location: any;
   public category: string;
-  public Uber_estimates: string[];
-  public Lyft_estimates: string[];
+  public Uber_estimates: any[];
+  public Lyft_estimates: any[];
 
-  constructor(name, address, category, Uber_estimates, Lyft_estimates) {
+  constructor(name, location, category, Uber_estimates, Lyft_estimates) {
     this.name = name;
-    this.address = address;
+    this.location = location;
     this.category = category;
     this.Uber_estimates = Uber_estimates;
     this.Lyft_estimates = Lyft_estimates;

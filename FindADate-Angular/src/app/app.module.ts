@@ -15,7 +15,7 @@ import { RecommendationsListComponent } from './recommendations-list/recommendat
     AppComponent,
     SearchFormComponent,
     AuthenticationComponent,
-    RecommendationsListComponent
+    RecommendationsListComponent,
   ],
   imports: [
     BrowserModule,

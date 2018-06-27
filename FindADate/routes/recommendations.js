@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
 const auth = require('../config/auth.json');
 const request = require('request');  //used for geolocation
 const rpl = require('request-promise-lite'); //used for waterfalling
 const async = require('async');
 
-router.post('/', function(req, res, next) {
+router.post('/', cors(), function(req, res, next) {
 
     let address = {
         street: `${req.body.street}`,
@@ -82,7 +83,7 @@ const getStart = function(address, callback) {
 const getRecommendations = function(fsParam, start, callback) {
     fsParam.qs.ll = `${start.lat},${start.lon}`;
 
-    let recommendations = {results: []};
+    let recommendations = [];
 
     request(fsParam, function (error, response, body) {
         if (error) throw new Error(error);
@@ -97,7 +98,7 @@ const getRecommendations = function(fsParam, start, callback) {
                 },
                 category: item.venue.categories[0].name
             };
-            recommendations.results.push(place)
+            recommendations.push(place)
         });
         callback(null, recommendations, start)
     });
@@ -142,7 +143,7 @@ const getUberPrices = function(recommendations, start, callback) {
             })
         };
 
-        let recommendationEstimates = recommendations.results.map(getPrices);
+        let recommendationEstimates = recommendations.map(getPrices);
 
         Promise.all(recommendationEstimates)
             .then(function() {
@@ -193,7 +194,7 @@ const getLyftPrices = function(recommendations, start, callback) {
             })
         };
 
-        let recommendationEstimates = recommendations.results.map(getPrices);
+        let recommendationEstimates = recommendations.map(getPrices);
 
         Promise.all(recommendationEstimates)
             .then(function() {

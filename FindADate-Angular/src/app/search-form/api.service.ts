@@ -18,7 +18,7 @@ export class ApiService {
       .set('theme', form.theme)
       .set('openNow', form.openNow);
 
-    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    const headers = new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded', 'Access-Control-Allow-Origin': '*'});
 
     return this.http
       .post(`${this.API_URL}`, body, {headers: headers, responseType: 'json'})

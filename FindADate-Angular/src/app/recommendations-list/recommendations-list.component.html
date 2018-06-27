@@ -1,3 +1,24 @@
-<p>
-  recommendations-list works!
-</p>
+<table align="center">
+  <tr>
+    <th>Name</th>
+    <th>Address</th>
+    <th>Category</th>
+    <th>Uber Prices</th>
+    <th>Lyft Prices</th>
+  </tr>
+  <tr *ngFor="let recommendation of recommendations">
+    <td>{{recommendation.name}}</td>
+    <td>{{recommendation.location.address}}</td>
+    <td>{{recommendation.category}}</td>
+    <td>
+      <ul *ngFor="let price of recommendation.Uber_estimates">
+        <li>{{price.type}}: {{price.estimate}}</li>
+      </ul>
+    </td>
+    <td>
+      <ul *ngFor="let price of recommendation.Lyft_estimates">
+        <li>{{price.type}}: {{price.estimate}}</li>
+      </ul>
+    </td>
+  </tr>
+</table>

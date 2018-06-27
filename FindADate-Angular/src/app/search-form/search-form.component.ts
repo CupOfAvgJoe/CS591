@@ -24,12 +24,13 @@ export class SearchFormComponent implements OnInit {
   openNowOptions = ['0', '1'];
 
   getRecommendations(form) :void{
-    console.log(form);
-    let star = new Search(form.street, form.city, form.state, form.postalcode, form.theme, form.openNow)
+    let star = new Search(form.street, form.city, form.state, form.postalcode, form.theme, form.openNow);
     this.message = `Searching for ${star.street} ${star.city}, ${star.state}, ${star.postalcode}`;
     this.apiService.getRecommendations(star)
       .subscribe(
-        (response) => {this.recommendations = response.results},
+        (response: Recommendation[]) => {
+          this.recommendations = response;
+        },
         (err) => console.log(`Error: ${err}`),
         () => console.log(`Completed Request`)
       );
@@ -44,4 +45,5 @@ export class SearchFormComponent implements OnInit {
   ngOnInit() {
 
   }
+
 }
